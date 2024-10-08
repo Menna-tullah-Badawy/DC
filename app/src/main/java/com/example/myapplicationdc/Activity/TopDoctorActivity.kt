@@ -33,7 +33,7 @@ class TopDoctorActivity : BaseActivity() {
         binding.apply {
             progressBarTopDoctor.visibility = View.VISIBLE
 
-            viewModel.doctor.observe(this@TopDoctorActivity, Observer { doctors ->
+            viewModel.doctor.observe(this@TopDoctorActivity, Observer {doctors ->
                 if (doctors != null && doctors.isNotEmpty()) {
                     viewTopDoctorList.layoutManager = LinearLayoutManager(this@TopDoctorActivity, LinearLayoutManager.VERTICAL, false)
                     viewTopDoctorList.adapter = TopDoctorAdapter2(doctors)

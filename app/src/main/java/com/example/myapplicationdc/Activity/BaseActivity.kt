@@ -1,6 +1,8 @@
 package com.example.myapplicationdc.Activity
 
+import android.app.Dialog
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,14 +11,26 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.myapplicationdc.R
 
 open class BaseActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_base)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+    private var pb: Dialog? = null
+
+    fun showProgressBar() {
+        if (pb == null) {
+            pb = Dialog(this)
+            pb?.setContentView(R.layout.progress_bar)
+            pb?.setCancelable(false)
         }
+        pb?.show()
+    }
+
+    fun hideProgressBar() {
+        pb?.let {
+            if (it.isShowing) {
+                it.dismiss()
+            }
+        }
+    }
+
+    fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

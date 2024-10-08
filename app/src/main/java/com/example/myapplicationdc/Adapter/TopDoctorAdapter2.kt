@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.request.RequestOptions
 import com.example.myapplicationdc.Activity.DetailActivity
-import com.example.myapplicationdc.databinding.ViewholderTopDoctor2Binding
 import com.example.myapplicationdc.Domain.DoctorModel
+import com.example.myapplicationdc.databinding.ViewholderTopDoctor2Binding
 
 class TopDoctorAdapter2(val items: MutableList<DoctorModel>):RecyclerView.Adapter<TopDoctorAdapter2.Viewholder>() {
     private var context: Context?=null

@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myapplicationdc.Activity.Authentication.SignInActivity
 import com.example.myapplicationdc.R
 
 class IntroActivity : AppCompatActivity() {
@@ -19,7 +20,7 @@ class IntroActivity : AppCompatActivity() {
         val getStartedButton = findViewById<Button>(R.id.getStartedButton)
 
         getStartedButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         }
     }

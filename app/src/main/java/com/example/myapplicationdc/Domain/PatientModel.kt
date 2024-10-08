@@ -3,11 +3,13 @@ package com.example.myapplicationdc.Domain
 import android.os.Parcel
 import android.os.Parcelable
 
-data class PatientModel (
+data class PatientModel(
     var id: Int = 0,
     var pname: String = "",
     var age: Int = 0,
     var gender: String = "",
+    var pationt_address: String = "",
+    var pationt_Mobile: Int = 0,
     var medicalHistory: String = "",
     var prescriptionPictures: String = "",
 ) : Parcelable {
@@ -17,15 +19,18 @@ data class PatientModel (
         parcel.readInt(),
         parcel.readString().toString(),
         parcel.readString().toString(),
+        parcel.readInt(),
+        parcel.readString().toString(),
         parcel.readString().toString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(pname)
         parcel.writeInt(age)
         parcel.writeString(gender)
+        parcel.writeString(pationt_address)
+        parcel.writeInt(pationt_Mobile)
         parcel.writeString(medicalHistory)
         parcel.writeString(prescriptionPictures)
     }

@@ -29,7 +29,7 @@ class DetailActivity : BaseActivity() {
         binding.apply {
             titleTxt.text = item.Name
             specialTxt.text = item.Special
-            patiensTxt.text = item.Patiens
+            patiensTxt.text = item.Patients
             bioTxt.text = item.Biography
             addressTxt.text = item.Address
             experienceTxt.text = item.Experience.toString() + " Years"
@@ -56,7 +56,7 @@ class DetailActivity : BaseActivity() {
             startActivity(intent)
         }
         binding.directionBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.Loactaion))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.Location))
             startActivity(intent)
         }
         binding.shareBtn.setOnClickListener {
