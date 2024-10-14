@@ -27,13 +27,13 @@ class DetailActivity : BaseActivity() {
         item = intent.getParcelableExtra<DoctorModel>("object")!!
 
         binding.apply {
-            titleTxt.text = item.Name
-            specialTxt.text = item.Special
-            patiensTxt.text = item.Patients
-            bioTxt.text = item.Biography
-            addressTxt.text = item.Address
-            experienceTxt.text = item.Experience.toString() + " Years"
-            ratingTxt.text = "${item.Rating}"
+            titleTxt.text = item.name
+            specialTxt.text = item.special
+            patiensTxt.text = item.patients
+            bioTxt.text = item.biography
+            addressTxt.text = item.address
+            experienceTxt.text = item.experience.toString() + " Years"
+            ratingTxt.text = "${item.rating}"
         }
 
        binding.backBtn.setOnClickListener {
@@ -41,36 +41,36 @@ class DetailActivity : BaseActivity() {
         }
         binding.websiteBtn.setOnClickListener {
             val i = Intent(Intent.ACTION_VIEW)
-            i.setData(Uri.parse(item.Site))
+            i.setData(Uri.parse(item.site))
             startActivity(i)
         }
         binding.messageBtn.setOnClickListener {
-            val uri = Uri.parse("smsto:${item.Mobile}")
+            val uri = Uri.parse("smsto:${item.mobile}")
             val intent = Intent(Intent.ACTION_SENDTO, uri)
             intent.putExtra("sms_body", "the SMS text")
             startActivity(intent)
         }
         binding.callBtn.setOnClickListener {
-            val uri = "tel:" + item.Mobile.trim()
+            val uri = "tel:" + item.mobile?.trim()
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse(uri))
             startActivity(intent)
         }
         binding.directionBtn.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.Location))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.location))
             startActivity(intent)
         }
         binding.shareBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_SUBJECT, item.Name)
-            intent.putExtra(Intent.EXTRA_TEXT, "${item.Name} ${item.Address} ${item.Mobile}")
+            intent.putExtra(Intent.EXTRA_SUBJECT, item.name)
+            intent.putExtra(Intent.EXTRA_TEXT, "${item.name} ${item.address} ${item.mobile}")
             startActivity(Intent.createChooser(intent, "Choose one"))
         }
 
 
 
         Glide.with(this)
-            .load(item.Picture)
+            .load(item.picture)
             .into(binding.img)
 
     }

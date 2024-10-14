@@ -28,17 +28,17 @@ class TopDoctorAdapter2(val items: MutableList<DoctorModel>):RecyclerView.Adapte
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: Viewholder, position: Int) {
-        holder.binding.nameTxt.text = items[position].Name
-        holder.binding.special.text = items[position].Special
-        holder.binding.ScoreTxt.text = items[position].Rating.toString()
-        holder.binding.ratingBar.rating=items[position].Rating.toFloat()
-        holder.binding.ScoreTxt.text=items[position].Rating.toString()
+        holder.binding.nameTxt.text = items[position].name
+        holder.binding.special.text = items[position].special
+        holder.binding.ScoreTxt.text = items[position].rating.toString()
+        holder.binding.ratingBar.rating=items[position].rating.toFloat()
+        holder.binding.ScoreTxt.text=items[position].rating.toString()
         holder.binding.degreeTxt.text="Professional Doctor"
 
 
 
         Glide.with(holder.itemView.context)
-            .load(items[position].Picture)
+            .load(items[position].picture)
             .apply{ RequestOptions().transform(CenterCrop())}
             .into(holder.binding.img)
 

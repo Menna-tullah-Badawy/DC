@@ -12,9 +12,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplicationdc.Activity.NavigationButtons.MainActivity
 import com.example.myapplicationdc.Domain.DoctorModel
 import com.example.myapplicationdc.R
+import com.example.myapplicationdc.ViewModel.DoctorViewModel
+import com.example.myapplicationdc.ViewModel.PatientViewModel
 import com.example.myapplicationdc.databinding.ActivityDoctorInputBinding
 
 import com.google.firebase.database.DatabaseReference
@@ -27,6 +30,7 @@ class DoctorInputActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private lateinit var database: DatabaseReference
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var doctorViewModel: DoctorViewModel
 
     private val TAG = "DoctorInputActivity"
 
@@ -34,6 +38,8 @@ class DoctorInputActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDoctorInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        doctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
 
         // Initialize Firebase Database reference
         database = FirebaseDatabase.getInstance().getReference("Doctors")
@@ -149,16 +155,19 @@ class DoctorInputActivity : AppCompatActivity() {
 
         // Prepare doctor data
         val doctor = DoctorModel(
-            Name = name,
-            Address = address,
-            Experience = experienceText,
-            Biography = biographysite,
-            Location = location,
-            Mobile = mobile,
-            Site = site,
-            Special = specialization,
-            Picture = imageUrl // Use the uploaded image URL
+            name = name,
+            address = address,
+            experience = experienceText,
+            biography = biographysite,
+            location = location,
+            mobile = mobile,
+            site = site,
+            special = specialization,
+            picture = imageUrl // Use the uploaded image URL
         )
+
+        doctorViewModel.setDoctorData(doctor)
+
 
         // Generate a unique ID for the doctor and save to Firebase
         val doctorId = database.push().key ?: return
@@ -167,8 +176,11 @@ class DoctorInputActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("Firebase", "Test data saved")
                     Toast.makeText(this, "Doctor data saved successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("DOCTOR_ID", doctorId)
+                    startActivity(intent)
                     finish()
+
                 } else {
                     task.exception?.let {
                         Log.e("Firebase", "Failed to save test data: ${task.exception?.message}")

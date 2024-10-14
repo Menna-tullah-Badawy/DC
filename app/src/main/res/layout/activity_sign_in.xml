@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="image" />
+
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
@@ -26,8 +27,8 @@
         android:layout_marginStart="40dp"
         android:textColor="@color/purble"
         app:layout_constraintTop_toBottomOf="@id/ivSinInLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEmail"
         android:layout_width="match_parent"
@@ -43,16 +44,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLogin"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        >
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
         <EditText
             android:id="@+id/etSinInEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email ID"
-            android:textSize="@dimen/et_text_size"
-            />
+            android:textSize="@dimen/et_text_size" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -71,30 +71,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilEmail"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        >
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
         <EditText
             android:id="@+id/etSinInPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Password"
-            android:textSize="@dimen/et_text_size"
-            />
+            android:textSize="@dimen/et_text_size" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/tvForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tilPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:textStyle="bold"
         android:text="Forgot Password?"
         android:textSize="18sp"
-        android:textColor="@color/purble"
-        />
+        android:textColor="@color/purble" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSignIn"
@@ -110,8 +109,7 @@
         android:text="Login"
         android:textColor="@color/white"
         android:textSize="22sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvOr"
@@ -136,12 +134,12 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center"
-            >
+            android:gravity="center">
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -149,8 +147,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="50dp"
-                />
+                android:layout_marginEnd="50dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -158,11 +155,10 @@
                 android:text="Login with Google"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/purble"
-                />
+                android:textColor="@color/purble" />
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -171,15 +167,14 @@
         app:layout_constraintTop_toBottomOf="@id/btnSignInWithGoogle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintStart_toStartOf="parent">
+
         <TextView
             android:id="@+id/tvNewHere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Here?"
-            android:textSize="18sp"
-            />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvRegister"
@@ -188,8 +183,27 @@
             android:textStyle="bold"
             android:text=" Register"
             android:textSize="18sp"
-            android:textColor="@color/purble"
-            />
+            android:textColor="@color/purble" />
     </LinearLayout>
+
+    <RadioButton
+        android:id="@+id/radioButtonDoctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doctor"
+        app:layout_constraintTop_toBottomOf="@id/tilPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="0dp" />
+
+    <RadioButton
+        android:id="@+id/radioButtonPatient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Patient"
+        app:layout_constraintTop_toBottomOf="@id/tilPassword"
+        app:layout_constraintStart_toEndOf="@id/radioButtonDoctor"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

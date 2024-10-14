@@ -12,9 +12,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplicationdc.Activity.NavigationButtons.MainActivity
 import com.example.myapplicationdc.Domain.PatientModel
 import com.example.myapplicationdc.R
+import com.example.myapplicationdc.ViewModel.PatientViewModel
 import com.example.myapplicationdc.databinding.ActivityPatientInputBinding
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -26,6 +28,7 @@ class PatientInputActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private lateinit var database: DatabaseReference
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var patientViewModel: PatientViewModel
 
     private val TAG = "PatientInputActivity"
 
@@ -34,15 +37,18 @@ class PatientInputActivity : AppCompatActivity() {
         binding = ActivityPatientInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize ViewModel
+        patientViewModel = ViewModelProvider(this).get(PatientViewModel::class.java)
 
+        // Initialize Firebase database reference
         database = FirebaseDatabase.getInstance().getReference("Patients")
 
-
+        // Set up gender spinner
         val genders = arrayOf("Male", "Female")
         val adapter = ArrayAdapter(this, R.layout.spinner_item, genders)
         binding.spinnerGender.adapter = adapter
 
-
+        // Set up image picker
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             when (result.resultCode) {
                 Activity.RESULT_OK -> {
@@ -61,12 +67,12 @@ class PatientInputActivity : AppCompatActivity() {
             }
         }
 
-
+        // Image upload button listener
         binding.btnUploadImage.setOnClickListener {
             openImagePicker()
         }
 
-        // Handle save button click
+        // Save patient button listener
         binding.btnSavePatient.setOnClickListener {
             if (validateInputs()) {
                 uploadImageToFirebaseStorage()
@@ -91,7 +97,7 @@ class PatientInputActivity : AppCompatActivity() {
         val medicalHistory = binding.editMedicalHistory.text.toString().trim()
 
         return when {
-            pname.isEmpty() || ageText.isEmpty() || medicalHistory.isEmpty() || gender.isEmpty()||pationt_address.isEmpty()||pationt_Mobile.isEmpty() -> {
+            pname.isEmpty() || ageText.isEmpty() || medicalHistory.isEmpty() || gender.isEmpty() || pationt_address.isEmpty() || pationt_Mobile.isEmpty() -> {
                 Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
                 false
             }
@@ -112,7 +118,6 @@ class PatientInputActivity : AppCompatActivity() {
             val storageReference = FirebaseStorage.getInstance().getReference("Patients/${System.currentTimeMillis()}")
             storageReference.putFile(uri)
                 .addOnSuccessListener {
-
                     storageReference.downloadUrl.addOnSuccessListener { downloadUri ->
                         savePatientData(downloadUri.toString())
                     }.addOnFailureListener { e ->
@@ -127,9 +132,7 @@ class PatientInputActivity : AppCompatActivity() {
         } ?: Log.e(TAG, "Image URI is null when trying to upload.")
     }
 
-
     private fun savePatientData(imageUrl: String) {
-        Log.d("Firebase", "Start data saved")
         val pname = binding.editPatientName.text.toString().trim()
         val age = binding.editPatientAge.text.toString().trim().toIntOrNull() ?: 0
         val pationt_address = binding.editPationtAddress.text.toString().trim()
@@ -137,29 +140,31 @@ class PatientInputActivity : AppCompatActivity() {
         val gender = binding.spinnerGender.selectedItem.toString()
         val medicalHistory = binding.editMedicalHistory.text.toString().trim()
 
-        // Prepare patient data
         val patient = PatientModel(
             pname = pname,
             age = age,
             gender = gender,
-            pationt_address=pationt_address,
-            pationt_Mobile=pationt_Mobile,
+            pationt_address = pationt_address,
+            pationt_Mobile = pationt_Mobile,
             medicalHistory = medicalHistory,
-            prescriptionPictures = imageUrl // Use the uploaded image URL
+            prescriptionPictures = imageUrl
         )
 
-        // Generate a unique ID for the patient and save to Firebase
+        // Set patient data in ViewModel
+        patientViewModel.setPatientData(patient)
+
         val patientId = database.push().key ?: return
         database.child(patientId).setValue(patient)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("Firebase", "Patient data saved successfully")
                     Toast.makeText(this, "Patient data saved successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    // Redirect to MainActivity and pass the patient ID
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("PATIENT_ID", patientId)
+                    startActivity(intent)
                     finish()
                 } else {
                     task.exception?.let {
-                        Log.e("Firebase", "Failed to save patient data: ${it.message}")
                         Toast.makeText(this, "Failed to save patient data: ${it.message}", Toast.LENGTH_SHORT).show()
                     }
                 }

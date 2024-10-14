@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myapplicationdc.Domain.CategoryModel
 import com.example.myapplicationdc.Domain.DoctorModel
+import com.example.myapplicationdc.Domain.PatientModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,9 +18,11 @@ class MainViewModel(): ViewModel() {
 
     private val _category = MutableLiveData<MutableList<CategoryModel>>()
     private val _doctor = MutableLiveData<MutableList<DoctorModel>>()
+    private val _patients = MutableLiveData<MutableList<PatientModel>>()
 
     val category: LiveData<MutableList<CategoryModel>> = _category
     val doctor: LiveData<MutableList<DoctorModel>> = _doctor
+//    val patients: LiveData<MutableList<PatientModel>> = _patients
 
     fun loadCategory() {
         val Ref = firebaseDatabase.getReference("Category")
