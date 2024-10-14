@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplicationdc.Activity.NavigationButtons.MainActivity
 import com.example.myapplicationdc.Domain.DoctorModel
 import com.example.myapplicationdc.R
-import com.example.myapplicationdc.ViewModel.DoctorViewModel
+//import com.example.myapplicationdc.ViewModel.DoctorViewModel
 import com.example.myapplicationdc.ViewModel.PatientViewModel
 import com.example.myapplicationdc.databinding.ActivityDoctorInputBinding
 
@@ -30,7 +30,7 @@ class DoctorInputActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private lateinit var database: DatabaseReference
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
-    private lateinit var doctorViewModel: DoctorViewModel
+//    private lateinit var doctorViewModel: DoctorViewModel
 
     private val TAG = "DoctorInputActivity"
 
@@ -39,7 +39,7 @@ class DoctorInputActivity : AppCompatActivity() {
         binding = ActivityDoctorInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        doctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
+//        doctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
 
         // Initialize Firebase Database reference
         database = FirebaseDatabase.getInstance().getReference("Doctors")
@@ -166,7 +166,7 @@ class DoctorInputActivity : AppCompatActivity() {
             picture = imageUrl // Use the uploaded image URL
         )
 
-        doctorViewModel.setDoctorData(doctor)
+//        doctorViewModel.setDoctorData(doctor)
 
 
         // Generate a unique ID for the doctor and save to Firebase

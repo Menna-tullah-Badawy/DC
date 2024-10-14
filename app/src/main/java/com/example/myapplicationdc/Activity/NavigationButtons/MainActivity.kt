@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize categories and top doctors
         initCategory()
         initTopDoctor()
 

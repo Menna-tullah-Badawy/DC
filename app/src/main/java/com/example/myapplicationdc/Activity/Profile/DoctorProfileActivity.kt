@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplicationdc.Domain.DoctorModel
 import com.example.myapplicationdc.R
-import com.example.myapplicationdc.ViewModel.DoctorViewModel
+//import com.example.myapplicationdc.ViewModel.DoctorViewModel
 import com.example.myapplicationdc.databinding.ActivityDoctorProfileBinding
 import com.google.firebase.database.*
 
@@ -16,7 +16,7 @@ class DoctorProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDoctorProfileBinding
     private lateinit var database: DatabaseReference
-    private lateinit var doctorViewModel: DoctorViewModel
+//    private lateinit var doctorViewModel: DoctorViewModel
     private var doctorId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class DoctorProfileActivity : AppCompatActivity() {
         binding = ActivityDoctorProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        doctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
+//        doctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
 
         database = FirebaseDatabase.getInstance().getReference("Doctors")
         doctorId = intent.getStringExtra("DOCTOR_ID")
