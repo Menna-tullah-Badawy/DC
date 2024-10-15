@@ -42,6 +42,18 @@
                 android:textColorHint="#A47182"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+            <EditText
+                android:id="@+id/editemail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_edittext_background"
+                android:hint="Doctor Email"
+                android:padding="12dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="#A47182"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <!-- Address -->
             <EditText

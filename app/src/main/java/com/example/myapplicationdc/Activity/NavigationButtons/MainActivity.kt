@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplicationdc.Activity.Profile.DoctorProfileActivity
-import com.example.myapplicationdc.Activity.Profile.PatientProfileActivity
+import com.example.myapplicationdc.Activity.Profile.AllProfilesActivity
+
 import com.example.myapplicationdc.Adapter.CategoryAdapter
 import com.example.myapplicationdc.Adapters.TopDoctorAdapter
 import com.example.myapplicationdc.R
@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity() {
         initCategory()
         initTopDoctor()
 
-
-
-
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
@@ -47,37 +44,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_account -> {
 
-                    val doctorId = intent.getStringExtra("DOCTOR_ID")
-                    if (doctorId != null) {
-                        Log.d("Firebase", "DOCTOR_ID found: $doctorId")
-                        val intent = Intent(this, DoctorProfileActivity::class.java).apply {
-                            putExtra("DOCTOR_ID", doctorId)
-                        }
-                        startActivity(intent)
-                    } else {
-                        Log.d("Firebase", "DOCTOR_ID not found.")
-
-                        // If no Doctor ID, check for Patient ID
-                        val patientId = intent.getStringExtra("PATIENT_ID")
-                        if (patientId != null) {
-                            Log.d("Firebase", "PATIENT_ID found: $patientId")
-
-                            val intent = Intent(this, PatientProfileActivity::class.java).apply {
-                                putExtra("PATIENT_ID", patientId)
-                            }
-                            startActivity(intent)
-                        } else {
-                            Log.d("Firebase", "No DOCTOR ID or PATIENT ID found.")
-
-                            Toast.makeText(this, "No DOCTOR ID or PATIENT ID found.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                    startActivity(Intent(this, AllProfilesActivity::class.java))
                     true
                 }
-                else -> false
+                else -> false  // This handles any unrecognized navigation item
             }
         }
     }
+
     private fun initTopDoctor() {
         binding.progressBarTopDoctors.visibility = View.VISIBLE
 

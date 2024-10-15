@@ -31,7 +31,7 @@
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Are you a Doctor or Patient?"
+                android:text="Choose Your Directions"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="16dp"
@@ -54,6 +54,24 @@
                 android:text="Patient"
                 android:backgroundTint="@color/purble"
                 android:textColor="@android:color/white"/>
+            <Button
+                android:id="@+id/btnGoToHomePage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Go To Home Page"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/purble"
+                android:textColor="@android:color/white"/>
+            <Button
+                android:id="@+id/btnGoToProfilePage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Go To Profile Page"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/purble"
+                android:textColor="@android:color/white"/>
+
+
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

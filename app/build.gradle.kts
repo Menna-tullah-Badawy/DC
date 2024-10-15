@@ -52,6 +52,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation ("androidx.security:security-crypto:1.1.0-alpha03")
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.play.services.auth)

@@ -9,9 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,11 +22,17 @@
         android:theme="@style/Theme.MyApplicationDC"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.Profile.DoctorProfileActivity"
+            android:name=".Adapter.DoctorProfileAdapterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.NavigationButtons.AllProfilesActivity"
+            android:name=".Activity.NavigationButtons.MainDoctorActivity"
             android:exported="false" />
+         <activity
+         android:name=".Activity.Profile.AllProfilesActivity"
+         android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Activity.Profile.DoctorProfileActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Activity.NavigationButtons.FavouriteActivity"
             android:exported="false" />
@@ -47,9 +51,9 @@
         <activity
             android:name=".Activity.Profile.PatientInputActivity"
             android:exported="false" />
-        <activity
-            android:name=".Activity.Profile.DoctorInputActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Activity.Profile.DoctorInputActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".Activity.Authentication.SignInActivity"
             android:exported="false" />
