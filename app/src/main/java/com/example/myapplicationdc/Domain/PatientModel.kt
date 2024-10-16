@@ -8,8 +8,8 @@ data class PatientModel(
     var name: String = "",
     var age: Int = 0,
     var gender: String = "",
-    var pationt_address: String = "",
-    var pationt_Mobile: Int = 0,
+    var address: String = "",
+    var mobile: Int = 0,
     var medicalHistory: String = "",
     var prescriptionPictures: String = "",
 ) : Parcelable {
@@ -29,8 +29,8 @@ data class PatientModel(
         parcel.writeString(name)
         parcel.writeInt(age)
         parcel.writeString(gender)
-        parcel.writeString(pationt_address)
-        parcel.writeInt(pationt_Mobile)
+        parcel.writeString(address)
+        parcel.writeInt(mobile)
         parcel.writeString(medicalHistory)
         parcel.writeString(prescriptionPictures)
     }

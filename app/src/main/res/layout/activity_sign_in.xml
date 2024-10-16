@@ -185,25 +185,4 @@
             android:textSize="18sp"
             android:textColor="@color/purble" />
     </LinearLayout>
-
-    <RadioButton
-        android:id="@+id/radioButtonDoctor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Doctor"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="0dp" />
-
-    <RadioButton
-        android:id="@+id/radioButtonPatient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Patient"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword"
-        app:layout_constraintStart_toEndOf="@id/radioButtonDoctor"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="0dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

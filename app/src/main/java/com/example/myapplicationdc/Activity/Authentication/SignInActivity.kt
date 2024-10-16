@@ -31,7 +31,6 @@ class SignInActivity : BaseActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    private lateinit var pb: Dialog
     private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,8 +145,8 @@ class SignInActivity : BaseActivity() {
                 val currentUser = auth.currentUser
                 if (currentUser != null) {
                     val userId = currentUser.uid
-                    val userName = account.displayName ?: "Unknown"
-                    val userEmail = email
+                    val userName = currentUser.displayName ?: "Unknown"
+                    val userEmail = currentUser.email ?: email
 
                     val user = User(id = userId, name = userName, email = userEmail)
 
@@ -187,6 +186,6 @@ class SignInActivity : BaseActivity() {
         }
     }
 
-    // Show ProgressBar
+
 
 }

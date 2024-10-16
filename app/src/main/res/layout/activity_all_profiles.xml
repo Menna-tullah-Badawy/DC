@@ -72,6 +72,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_edittext_background"
                 android:hint="Age"
+                android:maxLength="2"
                 android:padding="12dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#A47182"
@@ -113,6 +114,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/rounded_edittext_background"
                 android:hint="Mobile Number"
+                android:maxLength="11"
                 android:inputType="phone"
                 android:padding="12dp"
                 android:textColor="@android:color/black"
@@ -137,7 +139,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=" Patient Data"
+                        android:text="If you are a patient,fill that out"
                         android:textColor="#968EB4"
                         android:textSize="20sp" />
 
@@ -146,6 +148,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/rounded_edittext_background"
                         android:hint="Medical History"
                         android:padding="12dp"
@@ -196,7 +199,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Doctor Data"
+                        android:text=" If you are a doctor,fill that out"
                         android:textColor="#968EB4"
                         android:textSize="20sp" />
 
@@ -204,6 +207,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:text="Select Specialization"
                         android:textColor="#968EB4"
                         android:textSize="15sp"
@@ -221,6 +225,7 @@
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/rounded_edittext_background"
                         android:hint="Experience"
+                        android:maxLength="2"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textColorHint="#A47182"
@@ -282,15 +287,7 @@
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
                     app:backgroundTint="#948CB2" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Edit"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:backgroundTint="#948CB2" />
+
 
             </LinearLayout>
 
