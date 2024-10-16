@@ -1,5 +1,8 @@
 package com.example.myapplicationdc.Activity.Profile
 
+import android.app.Activity
+import android.content.ContentValues.TAG
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -8,43 +11,35 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import com.example.myapplicationdc.R
 import com.example.myapplicationdc.databinding.ActivityAllProfilesBinding
 import com.google.firebase.auth.FirebaseAuth
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.bumptech.glide.Glide
+import com.example.myapplicationdc.Domain.DoctorModel
+import com.example.myapplicationdc.Domain.PatientModel
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.io.FileOutputStream
+import java.util.logging.Logger
 
 class AllProfilesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAllProfilesBinding
+    private lateinit var database: DatabaseReference
+
     private var imageUri: Uri? = null
-    private var prescriptionImageUri: Uri? = null
-
-    private val genderOptions = arrayOf("Male", "Female", "Other")
-    private val specializationOptions = arrayOf("Cardiology", "Dentistry", "Neurology", "Orthopedics", "Radiology")
-
+    private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
     private lateinit var auth: FirebaseAuth
     private var userEmail: String? = null
 
-    private val getImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            val savedImagePath = saveImageToInternalStorage(it)
-            binding.imageView.setImageURI(Uri.parse(savedImagePath))
-            binding.imageView.visibility = View.VISIBLE
-            imageUri = Uri.parse(savedImagePath)
-        }
-    }
-
-    private val getUploadPrescriptionPictures = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            val savedPrescriptionPath = saveImageToInternalStorage(it, "prescription_image.jpg")
-            binding.imageViewprescriptionPictures.setImageURI(Uri.parse(savedPrescriptionPath))
-            binding.imageViewprescriptionPictures.visibility = View.VISIBLE
-            prescriptionImageUri = Uri.parse(savedPrescriptionPath)
-        }
-    }
+    private val genderOptions = arrayOf("Male", "Female", "Other")
+    private val specializationOptions = arrayOf("Cardiology", "Dentistry", "Neurology", "Orthopedics", "Radiology")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,32 +49,42 @@ class AllProfilesActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        // Only initialize the database once, and dynamically update it based on context
+        database = FirebaseDatabase.getInstance().reference
+
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                imageUri = result.data?.data
+                imageUri?.let {
+                    binding.imageView.setImageURI(it)
+                    binding.imageView.visibility = View.VISIBLE
+                } ?: run {
+                    Logger.getLogger(AllProfilesActivity::class.java.name).warning("Image URI is null")
+                }
+            }
+        }
+
         // Get current user
         val currentUser = auth.currentUser
 
-        // Check if user is logged in
         if (currentUser != null) {
-            userEmail = currentUser.email?.replace(".", "_") // Use email as a unique identifier
-            loadData() // Load the correct user data based on the email
+            userEmail = currentUser.email?.replace(".", "_")
+            loadData() // Load user-specific data
         } else {
-            // No user is signed in, redirect to login or show a message
             Log.e("AllProfilesActivity", "No user is signed in")
-            return // or startActivity for login
+            return
         }
 
         setupGenderSpinner()
         setupSpecializationSpinner()
-
+binding.btnUploadImage.setOnClickListener {
+    pickImage()
+}
         binding.btnSave.setOnClickListener {
             saveData()
-        }
+            uploadImageToFirebaseStorage()
 
-        binding.btnUploadImage.setOnClickListener {
-            getImageLauncher.launch("image/*")
-        }
-
-        binding.btnUploadprescriptionPictures.setOnClickListener {
-            getUploadPrescriptionPictures.launch("image/*")
+            saveDoctorData()
         }
     }
 
@@ -95,12 +100,12 @@ class AllProfilesActivity : AppCompatActivity() {
         binding.spinnerSpecialization.adapter = adapter
     }
 
-    // Save user data based on the userEmail
     private fun saveData() {
         val sharedPreferences = getEncryptedSharedPreferences()
         val editor = sharedPreferences.edit()
+
         deleteProfileData()
-        Log.e("SaveData", "${userEmail}_name: ${binding.editName.text.toString()}")
+
         editor.putString("${userEmail}_name", binding.editName.text.toString())
         editor.putString("${userEmail}_age", binding.editAge.text.toString())
         editor.putString("${userEmail}_special", binding.spinnerSpecialization.selectedItem.toString())
@@ -110,15 +115,13 @@ class AllProfilesActivity : AppCompatActivity() {
         editor.putString("${userEmail}_medicalHistory", binding.editMedicalHistory.text.toString())
         editor.putString("${userEmail}_experience", binding.editExperience.text.toString())
         editor.putString("${userEmail}_location", binding.editDoctorLocation.text.toString())
-        editor.putString("${userEmail}_website", binding.editDoctorSite.text.toString())
-        editor.putString("${userEmail}_biographysite", binding.editDoctorBiographysite.text.toString())
-        editor.putString("${userEmail}_pictureUri", imageUri?.toString())
-        editor.putString("${userEmail}_prescriptionPictureUri", prescriptionImageUri?.toString())
+        editor.putString("${userEmail}_site", binding.editDoctorSite.text.toString())
+        editor.putString("${userEmail}_biography", binding.editAllDoctorBiographysite.text.toString())
+        editor.putString("${userEmail}_picture", imageUri?.toString())
 
         editor.apply() // Save the changes
     }
 
-    // Load user data based on the userEmail
     private fun loadData() {
         val sharedPreferences = getEncryptedSharedPreferences()
 
@@ -131,28 +134,22 @@ class AllProfilesActivity : AppCompatActivity() {
         binding.editMedicalHistory.setText(sharedPreferences.getString("${userEmail}_medicalHistory", ""))
         binding.editExperience.setText(sharedPreferences.getString("${userEmail}_experience", ""))
         binding.editDoctorLocation.setText(sharedPreferences.getString("${userEmail}_location", ""))
-        binding.editDoctorSite.setText(sharedPreferences.getString("${userEmail}_website", ""))
-        binding.editDoctorBiographysite.setText(sharedPreferences.getString("${userEmail}_biographysite", ""))
+        binding.editDoctorSite.setText(sharedPreferences.getString("${userEmail}_site", ""))
+        binding.editAllDoctorBiographysite.setText(sharedPreferences.getString("${userEmail}_biography", ""))
 
-        val pictureUriString = sharedPreferences.getString("${userEmail}_pictureUri", null)
-        val prescriptionUriString = sharedPreferences.getString("${userEmail}_prescriptionPictureUri", null)
-
-        if (pictureUriString != null) {
-            imageUri = Uri.parse(pictureUriString)
-            binding.imageView.setImageURI(imageUri)
+        val imageUrl = sharedPreferences.getString("${userEmail}_imageUrl", null)
+        if (imageUrl != null) {
+            // Use Glide to load the image from Firebase Storage
+            Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.button_bg) // Optional: add a placeholder image
+                .into(binding.imageView)
             binding.imageView.visibility = View.VISIBLE
         } else {
             binding.imageView.visibility = View.GONE
         }
-
-        if (prescriptionUriString != null) {
-            prescriptionImageUri = Uri.parse(prescriptionUriString)
-            binding.imageViewprescriptionPictures.setImageURI(prescriptionImageUri)
-            binding.imageViewprescriptionPictures.visibility = View.VISIBLE
-        } else {
-            binding.imageViewprescriptionPictures.visibility = View.GONE
-        }
     }
+
 
     private fun getGenderPosition(gender: String?): Int {
         return genderOptions.indexOf(gender)
@@ -160,19 +157,6 @@ class AllProfilesActivity : AppCompatActivity() {
 
     private fun getSpecializationPosition(specialization: String?): Int {
         return specializationOptions.indexOf(specialization)
-    }
-
-    private fun saveImageToInternalStorage(uri: Uri, fileName: String = "profile_image.jpg"): String {
-        val inputStream = contentResolver.openInputStream(uri)
-        val imageFile = File(filesDir, fileName)
-        val outputStream = FileOutputStream(imageFile)
-
-        inputStream.use { input ->
-            outputStream.use { output ->
-                input?.copyTo(output)
-            }
-        }
-        return imageFile.absolutePath
     }
 
     private fun getEncryptedSharedPreferences(): SharedPreferences {
@@ -191,7 +175,6 @@ class AllProfilesActivity : AppCompatActivity() {
         val sharedPreferences = getEncryptedSharedPreferences()
         val editor = sharedPreferences.edit()
 
-        // Remove the user data associated with the current email
         editor.remove("${userEmail}_name")
         editor.remove("${userEmail}_age")
         editor.remove("${userEmail}_special")
@@ -201,11 +184,97 @@ class AllProfilesActivity : AppCompatActivity() {
         editor.remove("${userEmail}_medicalHistory")
         editor.remove("${userEmail}_experience")
         editor.remove("${userEmail}_location")
-        editor.remove("${userEmail}_website")
-        editor.remove("${userEmail}_biographysite")
-        editor.remove("${userEmail}_pictureUri")
-        editor.remove("${userEmail}_prescriptionPictureUri")
-
-        editor.apply() // Apply the changes to remove the data
+        editor.remove("${userEmail}_site")
+        editor.remove("${userEmail}_biography")
+        editor.remove("${userEmail}_picture")
+        editor.apply()
     }
+    private fun pickImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        pickImageLauncher.launch(intent)
+    }
+    private fun uploadImageToFirebaseStorage() {
+        imageUri?.let { uri ->
+            val storageRef = FirebaseStorage.getInstance().reference.child("profile_pictures/${System.currentTimeMillis()}.jpg")
+            val uploadTask = storageRef.putFile(uri)
+
+            uploadTask.addOnSuccessListener {
+                saveImageUri(uri)
+                storageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+                    // Save the image URL to EncryptedSharedPreferences
+                    val sharedPreferences = getEncryptedSharedPreferences()
+                    val editor = sharedPreferences.edit()
+                    editor.putString("${userEmail}_imageUrl", downloadUrl.toString())
+                    editor.apply()
+
+                    Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Failed to upload image.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun saveImageUri(uri: Uri) {
+        val sharedPreferences = getEncryptedSharedPreferences()
+        val editor = sharedPreferences.edit()
+        editor.putString("${userEmail}_picture", uri.toString()) // حفظ رابط الصورة
+        editor.apply()
+    }
+
+
+    private fun saveDoctorData() {
+        val doctor = DoctorModel(
+            name = binding.editName.text.toString(),
+            address = binding.editAddress.text.toString(),
+            biography = binding.editAllDoctorBiographysite.text.toString(), // Corrected access to text
+            mobile = binding.editMobile.text.toString(),
+            special = binding.spinnerSpecialization.selectedItem.toString(),
+            experience = binding.editExperience.text.toString().toIntOrNull() ?: 0,
+            location = binding.editDoctorLocation.text.toString(),
+            site = binding.editDoctorSite.text.toString(),
+            picture = imageUri.toString() // Ensure imageUri is not null before saving
+        )
+
+        val userId = auth.currentUser?.uid
+        userId?.let {
+            database.child("Doctors").child(it).setValue(doctor)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Doctor data saved successfully.", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to save data: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("AllProfilesActivity", "Error saving doctor data: ${e.message}")
+                }
+        } ?: run {
+            Log.e("AllProfilesActivity", "User is not authenticated")
+        }
+    }
+
+//    private fun savePatientData() {
+//        val Patient = PatientModel(
+//            name = binding.editName.text.toString(),
+//            age = binding.editAge.text.toString(),
+//            gender = binding.editGender.text.toString(), // Corrected access to text
+//            address = binding.editAddress.text.toString(),
+//            mobile = binding.editMobile.text.toString(),
+//            medicalHistory = binding.editMedicalHistory.text.toString(),
+//            prescriptionPictures = imageUri.toString() // Ensure imageUri is not null before saving
+//        )
+//
+//        val userId = auth.currentUser?.uid
+//        userId?.let {
+//            database.child("Patients").child(it).setValue(Patient)
+//                .addOnSuccessListener {
+//                    Toast.makeText(this, "Patient data saved successfully.", Toast.LENGTH_SHORT).show()
+//                }
+//                .addOnFailureListener { e ->
+//                    Toast.makeText(this, "Failed to save data: ${e.message}", Toast.LENGTH_SHORT).show()
+//                    Log.e("AllProfilesActivity", "Error saving Patient data: ${e.message}")
+//                }
+//        } ?: run {
+//            Log.e("AllProfilesActivity", "User is not authenticated")
+//        }
+//    }
 }
