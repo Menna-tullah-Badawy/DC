@@ -7,8 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplicationdc.Activity.Authentication.SignInActivity
-import com.example.myapplicationdc.Activity.Profile.AllProfilesActivity
 import com.example.myapplicationdc.Activity.Profile.ChooseYourDirectionsActivity
+import com.example.myapplicationdc.Activity.Profile.PatientProfileActivity
 import com.example.myapplicationdc.Adapter.CategoryAdapter
 import com.example.myapplicationdc.Adapters.TopDoctorAdapter
 import com.example.myapplicationdc.R
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_account -> {
-                    startActivity(Intent(this, AllProfilesActivity::class.java))
+                    startActivity(Intent(this, PatientProfileActivity::class.java))
                     true
                 }
                 else -> false

@@ -3,6 +3,8 @@ package com.example.myapplicationdc.Activity.Authentication
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import com.example.myapplicationdc.Activity.BaseActivity
 import com.example.myapplicationdc.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -21,8 +23,7 @@ class SignUpActivity : BaseActivity() {
         auth = Firebase.auth
 
         binding.tvLoginPage.setOnClickListener {
-            val intent = Intent(this, SignInActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, SignInActivity::class.java))
         }
 
         binding.btnSignUp.setOnClickListener { registerUser() }
@@ -50,12 +51,26 @@ class SignUpActivity : BaseActivity() {
             .addOnCompleteListener { task ->
                 hideProgressBar()
                 if (task.isSuccessful) {
-                    val intent = Intent(this, SignInActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    showUserTypeDialog(email) // Show dialog for user type selection
                 } else {
                     showToast("Registration failed: ${task.exception?.message}")
                 }
             }
+    }
+
+    private fun showUserTypeDialog(email: String) {
+        val userTypes = arrayOf("Doctor", "Patient")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select User Type")
+        builder.setItems(userTypes) { _, which ->
+            val selectedType = userTypes[which]
+            val intent = Intent(this, SignInActivity::class.java).apply {
+                putExtra("userType", selectedType)
+                putExtra("userEmail", email)
+            }
+            startActivity(intent)
+            finish()
+        }
+        builder.show()
     }
 }

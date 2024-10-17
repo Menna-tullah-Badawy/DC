@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplicationdc.Activity.NavigationButtons.DashboardActivity
 import com.example.myapplicationdc.Activity.NavigationButtons.FavouriteActivity
-import com.example.myapplicationdc.Activity.Profile.AllProfilesActivity
 import com.example.myapplicationdc.Activity.Profile.ChooseYourDirectionsActivity
+import com.example.myapplicationdc.Activity.Profile.DoctorProfileActivity
 import com.example.myapplicationdc.Adapter.CategoryAdapter
 import com.example.myapplicationdc.Adapters.TopDoctorAdapter
 import com.example.myapplicationdc.R
@@ -50,7 +50,7 @@ class HomeDoctorActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_daccount -> {
-                    startActivity(Intent(this, AllProfilesActivity::class.java))
+                    startActivity(Intent(this, DoctorProfileActivity::class.java))
                     true
                 }
                 else -> false

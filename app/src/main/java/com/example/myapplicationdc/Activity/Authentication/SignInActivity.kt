@@ -38,8 +38,9 @@ class SignInActivity : BaseActivity() {
         _binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get the user type passed from ChooseYourDirectionsActivity
+        // Get the user type and email passed from SignUpActivity
         userType = intent.getStringExtra("userType") ?: "unknown"
+        val userEmail = intent.getStringExtra("userEmail")
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -94,22 +95,13 @@ class SignInActivity : BaseActivity() {
                         val currentUser = auth.currentUser
                         if (currentUser != null) {
                             val userId = currentUser.uid
-                            val userName = currentUser.displayName ?: "Unknown"
                             val userEmail = currentUser.email ?: email
 
-                            val user = User(id = userId, name = userName, email = userEmail, usertype = userType)
+                            val user = User(id = userId, email = userEmail, usertype = userType)
 
                             database.child("users").child(userId).setValue(user).addOnCompleteListener { dbTask ->
                                 if (dbTask.isSuccessful) {
-                                    if (userType == "doctor") {
-                                        val intent = Intent(this, HomeDoctorActivity::class.java)
-                                        intent.putExtra("userEmail", userEmail)
-                                        startActivity(intent)
-                                    } else {
-                                        val intent = Intent(this, MainActivity::class.java)
-                                        intent.putExtra("userEmail", userEmail)
-                                        startActivity(intent)
-                                    }
+                                    navigateToHome(userType, userEmail)
                                 } else {
                                     Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
                                 }
@@ -122,6 +114,16 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+    private fun navigateToHome(userType: String, userEmail: String) {
+        val intent = if (userType.equals("Doctor", ignoreCase = true)) {
+            Intent(this, HomeDoctorActivity::class.java)
+        } else {
+            Intent(this, MainActivity::class.java)
+        }
+        intent.putExtra("userEmail", userEmail)
+        startActivity(intent)
+        finish()
+    }
 
     // Google Sign-In
     private fun signInWithGoogle() {
@@ -152,22 +154,13 @@ class SignInActivity : BaseActivity() {
                 val currentUser = auth.currentUser
                 if (currentUser != null) {
                     val userId = currentUser.uid
-                    val userName = currentUser.displayName ?: "Unknown"
                     val userEmail = currentUser.email ?: email
 
-                    val user = User(id = userId, name = userName, email = userEmail, usertype = userType)
+                    val user = User(id = userId,  email = userEmail, usertype = userType)
 
                     database.child("users").child(userId).setValue(user).addOnCompleteListener { dbTask ->
                         if (dbTask.isSuccessful) {
-                            if (userType == "doctor") {
-                                val intent = Intent(this, HomeDoctorActivity::class.java)
-                                intent.putExtra("userEmail", email)
-                                startActivity(intent)
-                            } else {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("userEmail", email)
-                                startActivity(intent)
-                            }
+                            navigateToHome(userType, userEmail)
                         } else {
                             Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
                         }
@@ -187,19 +180,10 @@ class SignInActivity : BaseActivity() {
                 false
             }
             TextUtils.isEmpty(password) -> {
-                binding.tilPassword.error = "Enter password"
+                binding.tilPassword.error = "Please enter a password"
                 false
             }
-            else -> {
-                binding.tilEmail.error = null
-                binding.tilPassword.error = null
-                true
-            }
+            else -> true
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

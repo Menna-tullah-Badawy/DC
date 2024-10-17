@@ -5,7 +5,6 @@ import android.os.Parcelable
 
 data class User(
     val id: String? = "",
-    val name: String? = "",
     val email: String? = "",
     val usertype: String? = "",
 ) : Parcelable {
@@ -13,12 +12,10 @@ data class User(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(name)
         parcel.writeString(email)
         parcel.writeString(usertype)
     }

@@ -21,18 +21,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicationDC"
         tools:targetApi="31">
+
         <activity
             android:name=".Activity.Authentication.HomeDoctorActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.BaseActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".Activity.Profile.AllProfilesActivity"-->
+<!--            android:exported="false" />-->
         <activity
-            android:name=".Activity.Profile.AllProfilesActivity"
+            android:name=".Activity.Profile.DoctorProfileActivity"
             android:exported="false" />
-         <activity
-         android:name=".Activity.Profile.ChooseYourDirectionsActivity"
-         android:exported="false" />
+        <activity
+            android:name=".Activity.Profile.PatientProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Profile.ChooseYourDirectionsActivity"
+            android:exported="false" />
         <activity
             android:name=".Activity.NavigationButtons.FavouriteActivity"
             android:exported="false" />
