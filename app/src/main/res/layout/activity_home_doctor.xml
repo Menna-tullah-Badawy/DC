@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Activity.NavigationButtons.MainActivity">
+    tools:context=".Activity.Authentication.HomeDoctorActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
 
 
         <ScrollView
-            android:id="@+id/scrollView2"
+            android:id="@+id/scrollView2DoctorMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="96dp"
@@ -38,16 +37,17 @@
                         android:layout_marginEnd="16dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
+
                         <TextView
-                            android:id="@+id/textView0"
+                            android:id="@+id/textView1DoctorMain"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Welcome Patient,"
+                            android:text="Welcome Doctor,"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/textView2DoctorMain"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Maryam Elghazaly"
@@ -56,7 +56,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/textView3"
+                            android:id="@+id/textView3DoctorMain"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="How are you today?"
@@ -67,14 +67,15 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/imageView3"
+                        android:id="@+id/imageView3DoctorMain"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_bg"
                         app:srcCompat="@drawable/bell" />
+
                     <ImageView
-                        android:id="@+id/imageView5Main"
+                        android:id="@+id/imageView5DoctorMain"
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_weight="1"
@@ -90,7 +91,7 @@
 
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/imageView4DoctorMain"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
@@ -101,7 +102,7 @@
                         app:srcCompat="@drawable/banner" />
 
                     <EditText
-                        android:id="@+id/editTextText2"
+                        android:id="@+id/editTextText2DoctorMain"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginTop="1dp"
@@ -118,10 +119,9 @@
                         android:textSize="16sp"
                         android:textStyle="italic"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView4DoctorMain"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/imageView4"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                        app:layout_constraintStart_toStartOf="@+id/imageView4DoctorMain"
                         app:layout_constraintVertical_bias="1.0" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -135,7 +135,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/textView4DoctorMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -146,7 +146,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView5DoctorMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="100dp"
@@ -164,7 +164,7 @@
                     android:minHeight="100dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/viewCategory"
+                        android:id="@+id/viewCategoryDoctorMain"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
@@ -179,7 +179,7 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <ProgressBar
-                        android:id="@+id/progressBarCategory"
+                        android:id="@+id/progressBarCategoryDoctorMain"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/doctorlistText"
+                        android:id="@+id/doctorlistTextDoctorMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="100dp"
@@ -226,7 +226,7 @@
                     android:layout_height="match_parent">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewTopDoctors"
+                        android:id="@+id/recyclerViewTopDoctorsDoctorMain"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -239,14 +239,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
-                        android:id="@+id/progressBarTopDoctors"
+                        android:id="@+id/progressBarTopDoctorsDoctorMain"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/recyclerViewTopDoctors" />
+                        app:layout_constraintTop_toTopOf="@+id/recyclerViewTopDoctorsDoctorMain" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -261,8 +261,8 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottomNavigationView"
-                app:menu="@menu/bottom_nav_menu"
+                android:id="@+id/bottomNavigationViewDoctorMain"
+                app:menu="@menu/bottom_nav_dmenu"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom">

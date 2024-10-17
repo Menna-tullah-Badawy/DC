@@ -1,7 +1,6 @@
 package com.example.myapplicationdc.Activity.Authentication
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -32,11 +31,15 @@ class SignInActivity : BaseActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var database: DatabaseReference
+    private lateinit var userType: String // To store user type (doctor/patient)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Get the user type passed from ChooseYourDirectionsActivity
+        userType = intent.getStringExtra("userType") ?: "unknown"
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -94,14 +97,19 @@ class SignInActivity : BaseActivity() {
                             val userName = currentUser.displayName ?: "Unknown"
                             val userEmail = currentUser.email ?: email
 
-                            val user = User(id = userId, name = userName, email = userEmail)
+                            val user = User(id = userId, name = userName, email = userEmail, usertype = userType)
 
-                            // Save user data in Realtime Database
                             database.child("users").child(userId).setValue(user).addOnCompleteListener { dbTask ->
                                 if (dbTask.isSuccessful) {
-                                    val intent = Intent(this, MainActivity::class.java)
-                                    intent.putExtra("userEmail", userEmail)
-                                    startActivity(intent)
+                                    if (userType == "doctor") {
+                                        val intent = Intent(this, HomeDoctorActivity::class.java)
+                                        intent.putExtra("userEmail", userEmail)
+                                        startActivity(intent)
+                                    } else {
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        intent.putExtra("userEmail", userEmail)
+                                        startActivity(intent)
+                                    }
                                 } else {
                                     Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
                                 }
@@ -114,6 +122,7 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+
     // Google Sign-In
     private fun signInWithGoogle() {
         googleSignInClient.signOut().addOnCompleteListener {
@@ -122,7 +131,6 @@ class SignInActivity : BaseActivity() {
         }
     }
 
-    // Handle Google Sign-In result
     private fun handleResults(task: Task<GoogleSignInAccount>) {
         if (task.isSuccessful) {
             val account = task.result
@@ -134,7 +142,6 @@ class SignInActivity : BaseActivity() {
         }
     }
 
-    // Update UI after successful Google Sign-In
     private fun updateUI(account: GoogleSignInAccount, email: String) {
         showProgressBar()
 
@@ -148,14 +155,19 @@ class SignInActivity : BaseActivity() {
                     val userName = currentUser.displayName ?: "Unknown"
                     val userEmail = currentUser.email ?: email
 
-                    val user = User(id = userId, name = userName, email = userEmail)
+                    val user = User(id = userId, name = userName, email = userEmail, usertype = userType)
 
-                    // Save user data in Firebase Realtime Database
                     database.child("users").child(userId).setValue(user).addOnCompleteListener { dbTask ->
                         if (dbTask.isSuccessful) {
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra("userEmail", email)
-                            startActivity(intent)
+                            if (userType == "doctor") {
+                                val intent = Intent(this, HomeDoctorActivity::class.java)
+                                intent.putExtra("userEmail", email)
+                                startActivity(intent)
+                            } else {
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("userEmail", email)
+                                startActivity(intent)
+                            }
                         } else {
                             Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
                         }
@@ -186,6 +198,8 @@ class SignInActivity : BaseActivity() {
         }
     }
 
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

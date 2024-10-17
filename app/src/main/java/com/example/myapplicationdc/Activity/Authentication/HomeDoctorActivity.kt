@@ -1,4 +1,4 @@
-package com.example.myapplicationdc.Activity.NavigationButtons
+package com.example.myapplicationdc.Activity.Authentication
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,46 +6,50 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplicationdc.Activity.Authentication.SignInActivity
+import com.example.myapplicationdc.Activity.NavigationButtons.DashboardActivity
+import com.example.myapplicationdc.Activity.NavigationButtons.FavouriteActivity
 import com.example.myapplicationdc.Activity.Profile.AllProfilesActivity
 import com.example.myapplicationdc.Activity.Profile.ChooseYourDirectionsActivity
 import com.example.myapplicationdc.Adapter.CategoryAdapter
 import com.example.myapplicationdc.Adapters.TopDoctorAdapter
 import com.example.myapplicationdc.R
 import com.example.myapplicationdc.ViewModel.MainViewModel
-import com.example.myapplicationdc.databinding.ActivityMainBinding
+import com.example.myapplicationdc.databinding.ActivityHomeDoctorBinding
+import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class HomeDoctorActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityHomeDoctorBinding
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityHomeDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Initialize the RecyclerViews
         initCategory()
         initTopDoctor()
-        binding.imageView5Main.setOnClickListener {
+        binding.imageView5DoctorMain.setOnClickListener {
 
             val intent = Intent(this, ChooseYourDirectionsActivity::class.java)
             startActivity(intent)
             finish()
         }
+
         // Handle bottom navigation view
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+        binding.bottomNavigationViewDoctorMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_home -> true // Stay on the current screen
-                R.id.navigation_fav_bold -> {
+                R.id.navigation_dhome -> true
+                R.id.navigation_dfav_bold -> {
                     startActivity(Intent(this, FavouriteActivity::class.java))
                     true
                 }
-                R.id.navigation_dashboard -> {
+                R.id.navigation_ddashboard -> {
                     startActivity(Intent(this, DashboardActivity::class.java))
                     true
                 }
-                R.id.navigation_account -> {
+                R.id.navigation_daccount -> {
                     startActivity(Intent(this, AllProfilesActivity::class.java))
                     true
                 }
@@ -55,20 +59,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTopDoctor() {
-        // Show progress bar while loading data
-        binding.progressBarTopDoctors.visibility = View.VISIBLE
+        binding.progressBarTopDoctorsDoctorMain.visibility = View.VISIBLE
 
         viewModel.doctor.observe(this) { doctors ->
             if (!doctors.isNullOrEmpty()) {
-                binding.recyclerViewTopDoctors.layoutManager = LinearLayoutManager(
+                binding.recyclerViewTopDoctorsDoctorMain.layoutManager = LinearLayoutManager(
                     this,
                     LinearLayoutManager.HORIZONTAL,
                     false
                 )
-                binding.recyclerViewTopDoctors.adapter = TopDoctorAdapter(doctors)
+                binding.recyclerViewTopDoctorsDoctorMain.adapter = TopDoctorAdapter(doctors)
             }
             // Hide progress bar after data is loaded
-            binding.progressBarTopDoctors.visibility = View.GONE
+            binding.progressBarTopDoctorsDoctorMain.visibility = View.GONE
         }
 
         viewModel.loadDoctors()
@@ -76,21 +79,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCategory() {
         // Show progress bar while loading data
-        binding.progressBarCategory.visibility = View.VISIBLE
+        binding.progressBarCategoryDoctorMain.visibility = View.VISIBLE
 
         viewModel.category.observe(this) { categories ->
             if (!categories.isNullOrEmpty()) {
-                binding.viewCategory.layoutManager = LinearLayoutManager(
+                binding.viewCategoryDoctorMain.layoutManager = LinearLayoutManager(
                     this,
                     LinearLayoutManager.HORIZONTAL,
                     false
                 )
-                binding.viewCategory.adapter = CategoryAdapter(categories)
+                binding.viewCategoryDoctorMain.adapter = CategoryAdapter(categories)
             }
             // Hide progress bar after data is loaded
-            binding.progressBarCategory.visibility = View.GONE
+            binding.progressBarCategoryDoctorMain.visibility = View.GONE
         }
 
         viewModel.loadCategory()
     }
+
+
 }
