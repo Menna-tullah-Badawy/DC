@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplicationdc.Activity.Authentication.SignInActivity
-import com.example.myapplicationdc.Activity.Profile.ChooseYourDirectionsActivity
+import com.example.myapplicationdc.Activity.Directions.NavigationButtons.ChooseYourDirectionsActivity
 import com.example.myapplicationdc.R
 class IntroActivity : AppCompatActivity() {
 

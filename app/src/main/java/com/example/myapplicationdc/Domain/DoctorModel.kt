@@ -15,7 +15,9 @@ data class DoctorModel (
     val mobile: String = "",
     val patients: String = "",
     val rating: Double = 0.0,
-    val site: String = ""
+    val site: String = "",
+    val fees: String = "", // Add fees as a String
+    val days: List<DayModel> = listOf() // Add list of days
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),
@@ -29,7 +31,10 @@ data class DoctorModel (
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readDouble(),
-        parcel.readString().toString()
+        parcel.readString().toString(),
+        parcel.readString() ?: "", // Read fees from parcel
+        parcel.createTypedArrayList(DayModel.CREATOR) ?: listOf() // Read list of days
+
     ) { }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -45,6 +50,8 @@ data class DoctorModel (
         parcel.writeString(patients)
         parcel.writeDouble(rating)
         parcel.writeString(site)
+        parcel.writeString(fees) // Write fees to parcel
+        parcel.writeTypedList(days) // Write list of days
     }
 
     override fun describeContents(): Int {

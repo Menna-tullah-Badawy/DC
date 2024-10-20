@@ -1,4 +1,4 @@
-package com.example.myapplicationdc.Activity.NavigationButtons
+package com.example.myapplicationdc.Activity.Directions.NavigationButtons
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.myapplicationdc.Activity.BaseActivity
-import com.example.myapplicationdc.Activity.NavigationButtons.MainActivity
+import com.example.myapplicationdc.Activity.Directions.DoctorDirections.HomeDoctorActivity
+import com.example.myapplicationdc.Activity.Directions.PatientDirections.MainActivity
+import com.example.myapplicationdc.Domain.User
 import com.example.myapplicationdc.R
 import com.example.myapplicationdc.databinding.ActivitySignInBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn

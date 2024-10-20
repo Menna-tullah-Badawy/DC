@@ -1,14 +1,12 @@
-
-package com.example.myapplicationdc.Activity
+package com.example.myapplicationdc.Activity.Directions.DoctorDirections
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplicationdc.Activity.BaseActivity
 import com.example.myapplicationdc.Adapter.TopDoctorAdapter2
-import com.example.myapplicationdc.R
 import com.example.myapplicationdc.ViewModel.MainViewModel
 import com.example.myapplicationdc.databinding.ActivityTopDoctorBinding
 
@@ -18,7 +16,6 @@ class TopDoctorActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityTopDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,10 +30,14 @@ class TopDoctorActivity : BaseActivity() {
         binding.apply {
             progressBarTopDoctor.visibility = View.VISIBLE
 
-            viewModel.doctor.observe(this@TopDoctorActivity, Observer {doctors ->
+            viewModel.doctor.observe(this@TopDoctorActivity, Observer { doctors ->
                 if (doctors != null && doctors.isNotEmpty()) {
-                    viewTopDoctorList.layoutManager = LinearLayoutManager(this@TopDoctorActivity, LinearLayoutManager.VERTICAL, false)
-                    viewTopDoctorList.adapter = TopDoctorAdapter2(doctors)
+                    viewTopDoctorList.layoutManager = LinearLayoutManager(
+                        this@TopDoctorActivity,
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+                    viewTopDoctorList.adapter = TopDoctorAdapter2(doctors, null)
                     progressBarTopDoctor.visibility = View.GONE
                 } else {
                     Log.d("TopDoctorActivity", "No doctors data available.")

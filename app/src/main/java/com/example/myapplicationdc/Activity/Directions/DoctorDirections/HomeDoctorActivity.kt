@@ -1,4 +1,4 @@
-package com.example.myapplicationdc.Activity.Authentication
+package com.example.myapplicationdc.Activity.Directions.DoctorDirections
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,16 +6,15 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplicationdc.Activity.NavigationButtons.DashboardActivity
-import com.example.myapplicationdc.Activity.NavigationButtons.FavouriteActivity
-import com.example.myapplicationdc.Activity.Profile.ChooseYourDirectionsActivity
+import com.example.myapplicationdc.Activity.Directions.NavigationButtons.ChooseYourDirectionsActivity
+import com.example.myapplicationdc.Activity.Directions.NavigationButtons.FavouriteActivity
 import com.example.myapplicationdc.Activity.Profile.DoctorProfileActivity
 import com.example.myapplicationdc.Adapter.CategoryAdapter
 import com.example.myapplicationdc.Adapters.TopDoctorAdapter
 import com.example.myapplicationdc.R
 import com.example.myapplicationdc.ViewModel.MainViewModel
 import com.example.myapplicationdc.databinding.ActivityHomeDoctorBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.myapplicationdc.ui.dashboard.DashboardActivity
 
 class HomeDoctorActivity : AppCompatActivity() {
 
@@ -31,13 +30,12 @@ class HomeDoctorActivity : AppCompatActivity() {
         initCategory()
         initTopDoctor()
         binding.imageView5DoctorMain.setOnClickListener {
-
             val intent = Intent(this, ChooseYourDirectionsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // Handle bottom navigation view
+
         binding.bottomNavigationViewDoctorMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_dhome -> true
@@ -68,7 +66,7 @@ class HomeDoctorActivity : AppCompatActivity() {
                     LinearLayoutManager.HORIZONTAL,
                     false
                 )
-                binding.recyclerViewTopDoctorsDoctorMain.adapter = TopDoctorAdapter(doctors)
+                binding.recyclerViewTopDoctorsDoctorMain.adapter = TopDoctorAdapter(doctors, null)
             }
             // Hide progress bar after data is loaded
             binding.progressBarTopDoctorsDoctorMain.visibility = View.GONE
@@ -96,6 +94,4 @@ class HomeDoctorActivity : AppCompatActivity() {
 
         viewModel.loadCategory()
     }
-
-
 }

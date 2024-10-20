@@ -1,4 +1,4 @@
-package com.example.myapplicationdc.Activity.Authentication
+package com.example.myapplicationdc.Domain
 
 import android.os.Parcel
 import android.os.Parcelable

@@ -9,8 +9,8 @@
         android:icon="@drawable/btn_2"
         android:title="Favourite List" />
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/baseline_dashboard_24"
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/history"
         android:title="Dashboard" />
     <item
         android:id="@+id/navigation_account"

@@ -1,15 +1,12 @@
-package com.example.myapplicationdc.Activity.Profile
+package com.example.myapplicationdc.Activity.Directions.NavigationButtons
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myapplicationdc.Activity.Authentication.SignInActivity
-import com.example.myapplicationdc.Activity.NavigationButtons.MainActivity
 import com.example.myapplicationdc.R
 import com.example.myapplicationdc.databinding.ActivityChooseYourDirectionsBinding
 

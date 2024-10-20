@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.NavigationButtons.FavouriteActivity">
+    tools:context=".Activity.Directions.NavigationButtons.FavouriteActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

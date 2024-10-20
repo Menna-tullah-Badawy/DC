@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fav_bold" />
+            app:srcCompat="@drawable/ic_unfav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
